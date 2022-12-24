@@ -1,0 +1,209 @@
+:root {
+    --primary-gradient: linear-gradient(60deg, rgba(245,75,100,1) 0%, rgba(247,131,97,1) 100%);
+    --primary-color: #F54B64;
+    --primary-color-2: #F78361;
+    --secondary-color: #242A38;
+    --dark: #202430;
+    --dark-grey: #8893aa;
+    --white: #FFFFFF;
+}
+
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+
+/* BARRA DE ROLAGEM */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--dark-grey) var(--primary-color);
+  }
+  
+  /* Works on Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 10px;
+
+  }
+  
+  *::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0);
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 20px;
+    border: 3px solid var(--dark);
+  }
+
+
+
+body {
+    font-family: 'Poppins', sans-serif;
+    height: 100vh;
+    font-size: 16px;
+    background-color: var(--dark);
+}
+
+
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    flex-direction: column;
+}
+
+main header h1 {
+    
+    color: white;
+    font-weight: 400;  
+    margin-bottom: -5px; 
+}
+
+main header h1 span {
+    background: var(--primary-gradient);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+.hub-tasks {
+    background-color: var(--secondary-color);
+    /* padding: 20px; */
+    width: 630px;
+    border-radius: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.507);
+    margin-top: 15px;
+
+}
+
+.list {
+    list-style: none;
+    width: 100%;
+    /* max-width: 560px; */
+    /* border: 5px solid var(--); */
+    border-radius: 30px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 500px;
+}
+
+.list li {
+    background: var(--secondary-color);
+    border-bottom: 1px solid #000000;
+    padding: 20px;
+    font-size: 1.1em;
+    color: rgb(240, 240, 240);
+    position: relative;
+    display: grid;
+    grid-template: 100% / 1fr 10fr 1fr ;
+    /* justify-content: center;
+    align-items: center; */
+}
+
+.list li span {
+    /* background-color: red; */
+    padding: 0 10px;
+}
+
+.checkBT{
+    background-color: #14161d;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+}
+
+.checkBT:hover{
+    background-color: #0a0b0f;
+}
+
+.done::after{
+    content: '';
+    background: var(--primary-gradient);
+    width: 20px;
+    height: 20px;
+    border-radius: 30px;
+    display: block;
+}
+
+
+.deleteBT{
+    background: var(--primary-color);
+    width: 20px;
+    height: 20px;
+    border-radius: 30px;
+    opacity: 0;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: -20px;
+    top: 25px;
+    transition: all 200ms;
+}
+
+.list li:hover .deleteBT {
+    opacity: 1;
+    right: 20px;
+}
+
+
+.inputTaskSection {
+    width: 630px;
+    display: grid;
+    margin-top: 20px;
+    grid-template: 100% / 4fr 1fr;
+    gap: 5%;
+    
+}
+
+#inputTask {
+    padding: 15px 30px;
+    display: inline-block;
+    border-radius: 30px;
+    border: none;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+
+}
+
+.enviarBT {
+    padding: 15px 30px;
+    display: inline-block;
+    border-radius: 30px;
+    border: none;
+    background: var(--primary-gradient);
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    transition: 100ms;
+    cursor: pointer;
+}
+
+.enviarBT:hover {
+    transform: scale(1.1, 1.1);
+}
+
+
+#made-by {
+    margin-top: 10px;
+    color: white;
+    font-size: 0.8em;
+    font-style: italic;
+}
+
+#made-by span {
+    background: var(--primary-gradient);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+}
