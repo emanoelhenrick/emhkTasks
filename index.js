@@ -73,8 +73,8 @@ app.post('/delete', (req, res) => {
 app.post('/done', (req, res) => {
     const { doneBT } = req.body
     if(doneBT){
-        const data = fs.readFileSync('./store/tasks.json') // le o arquivo json e coloca os dados numa constante
-        const tasks = JSON.parse(data) //transfroma os dados da constante em array/lista
+        const data = fs.readFileSync('./store/tasks.json')
+        const tasks = JSON.parse(data)
         console.log(tasks);
         const newTasks = tasks.map((element) => {           
             if (doneBT == element.id){
