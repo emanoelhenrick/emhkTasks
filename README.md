@@ -6,7 +6,7 @@ Um sistema de servidor simples que salva os inputs do usuário em um json e os e
 
 ## Screenshots
 
-![App Screenshot](https://imgur.com/Gy4t6R9)
+![App Screenshot](https://github.com/emanoelhenrick/emhkTask/blob/e5acf2e8540cd64b95fef6b606f1e55da4aa75a3/emhktasks.PNG)
 
-![App Screenshot](https://imgur.com/kSaDu5k)
+![App Screenshot](https://github.com/emanoelhenrick/emhkTask/blob/e5acf2e8540cd64b95fef6b606f1e55da4aa75a3/emhktasks2.PNG)
 
