@@ -10,29 +10,22 @@
 
 </head>
 <body>
-
     <main>
         <header>
             <h1>emhk <span>tasks</span></h1>
         </header>
-            <section class="hub-tasks">
-                <ul class="list">
-                    
-                    <%- include('partials/tasks.ejs') %>
-
-                </ul>           
-            </section>
-        
+        <section class="hub-tasks">
+            <ul class="list">               
+                <%- include('partials/tasks.ejs') %>
+            </ul>           
+        </section>       
         <form action="/save-task" method="post">
             <section class="inputTaskSection">
                 <input name="task" type="text" placeholder="Digite uma tarefa" id="inputTask">
                 <button class="enviarBT" type="submit">Enviar</button>
             </section>
         </form>
-
         <span id="made-by"> made by <span>manel códigos</span></span>
-        
-    
     </main>
 
     <script src="/js/main.js"></script>

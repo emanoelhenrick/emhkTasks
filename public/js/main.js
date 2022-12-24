@@ -1,19 +1,13 @@
 const Main = {
     init: function(){
-
         this.cacheSelectors()
         this.bindEvents()
         this.overflowHub()
         this.unTasks()
-
     },
 
     bindEvents: function(){
-        const self = this
-
-        // this.$hubTasks.onload = self.Events.checkButton_verific(self.$checkButton);
-        window.onload = self.Events.checkButton_verific(self.$checkButton);
-
+        window.onload = this.Events.checkButton_verific(this.$checkButton);
     },
 
     cacheSelectors: function(){
@@ -30,19 +24,15 @@ const Main = {
     },
 
     unTasks: function(){
-
-            const li = this.$hubTasks.childNodes[1].childElementCount
-            
+            const li = this.$hubTasks.childNodes[1].childElementCount           
             if(li === 0){               
                 this.$hubTasks.style.display = 'none'
             }
-
     },
 
     Events: {
         checkButton_verific: function(lista){
             lista.forEach((item) => {
-
                 const doneValue = item.dataset.done
 
                 if(doneValue === 'true'){
@@ -50,10 +40,7 @@ const Main = {
                 }
                 item.classList.remove('done')
             })
-
-        },
-
-        
+        }, 
     }
 }
 
