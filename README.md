@@ -1,7 +1,7 @@
 
 # emhk tasks
 
-Um sistema de servidor simples que salva os inputs do usuário em um json e os exibe de acordo com suas caracteristicas.
+Um sistema de servidor simples que salva os inputs do usuário em um json e os exibe de fazendo requisições à APIs.
 
 
 ## Screenshots
