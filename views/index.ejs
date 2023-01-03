@@ -15,16 +15,16 @@
             <h1>emhk <span>tasks</span></h1>
         </header>
         <section class="hub-tasks">
-            <ul class="list">               
-                <%- include('partials/tasks.ejs') %>
+            <ul class="list" id="list">               
+                
             </ul>           
         </section>       
-        <form action="/save-task" method="post">
+
             <section class="inputTaskSection">
                 <input name="task" type="text" placeholder="Digite uma tarefa" id="inputTask">
-                <button class="enviarBT" type="submit">Enviar</button>
+                <button id="sendButton" class="enviarBT">Enviar</button>
             </section>
-        </form>
+
         <span id="made-by"> made by <span>manel códigos</span></span>
     </main>
 

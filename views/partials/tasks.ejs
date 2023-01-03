@@ -1,14 +1,8 @@
 
 <% tasks.forEach(taskItem => { %>
     <li>
-        <form action="/done" method="post">
-            <button name="doneBT" class="checkBT" value="<%= taskItem.id  %>" id="checkBT" data-done="<%= taskItem.done  %>"></button>
-        </form>  
-
-            <span><%= taskItem.task  %></span>
-
-        <form action="/delete" method="post">
-            <button name="deleteBT" class="deleteBT" value="<%= taskItem.id  %>"></button>
-        </form>
+        <button name="doneBT" class="checkBT" value="<%= taskItem.id  %>" id="checkBT" data-done=""></button>
+        <span><%= taskItem.task  %></span>
+        <button name="deleteBT" class="deleteBT" value="<%= taskItem.id  %>"></button>
     </li>
 <% }) %>
