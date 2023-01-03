@@ -5,24 +5,6 @@ function generateID(){
 }
 
 const taskFunctions = {
-
-    //const randomID = () => Math.round(Math.random() * 10000)
-    newID: () => {
-        const data = fs.readFileSync('./store/tasks.json')
-        const tasks = JSON.parse(data)
-        let ID = 0
-        function verificID(){
-            ID = Math.round(Math.random() * 10000)
-            const verific = tasks.some((item) => item.id == ID)
-            if(verific){
-                return verificID()
-            } else {
-                return ID
-            }
-        }
-        return verificID()
-    },
-    
     
     updateTasks(){
         const tasksJSON = fs.readFileSync('./store/tasks.json')
@@ -43,9 +25,7 @@ const taskFunctions = {
 
     deleteTask(taskID){
         this.updateTasks()
-
         const newTasks = this.tasksObj.filter(element => element.id !== taskID)
-
         const tasksJSON = JSON.stringify(newTasks)
         fs.writeFileSync('./store/tasks.json', tasksJSON)
 
@@ -53,7 +33,6 @@ const taskFunctions = {
 
     doneTask(taskID){
         this.updateTasks()
-
         const newTasks = this.tasksObj.map(element => {
             if(element.id !== taskID){
                 return element
@@ -63,11 +42,9 @@ const taskFunctions = {
                 } else {
                     element.done = true
                 }
-
                 return element
             }
         })
-
         const tasksJSON = JSON.stringify(newTasks)
         fs.writeFileSync('./store/tasks.json', tasksJSON)
     }

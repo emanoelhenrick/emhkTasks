@@ -97,15 +97,12 @@ const Main = {
             }
 
             const taskID = {taskID: element.target.value}
-
             const options = {
                 method: "POST",
                 headers: new Headers({'content-type': 'application/json'}),
                 body: JSON.stringify(taskID)
             }
-
             fetch('http://192.168.0.103:8080/api/done', options)
-
            
         },
 
@@ -125,15 +122,12 @@ const Main = {
         delete_ask: async function(element){
 
             const taskID = {taskID: element.target.value}
-
             const options = {
                 method: "POST",
                 headers: new Headers({'content-type': 'application/json'}),
                 body: JSON.stringify(taskID)
             }
-
             await fetch('http://192.168.0.103:8080/api/delete', options)
-
             Main.init()
         },
     }

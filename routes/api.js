@@ -13,13 +13,11 @@ router.get('/all', (req, res) => {
 router.post('/new', bodyParser.json(), (req, res) => {
     const { task } = req.body
     tf.saveTask(task)
-    console.log('New Task:', task);
     res.end()
 })
 
 router.post('/delete', bodyParser.json(), (req, res) => {
     const { taskID } = req.body
-    console.log(taskID);
     tf.deleteTask(taskID)
 
     res.end()
