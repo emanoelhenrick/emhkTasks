@@ -1,7 +1,7 @@
 
 # emhk tasks
 
-Um sistema de servidor simples que salva os inputs do usuário em um json e os exibe de fazendo requisições à APIs.
+Um sistema de servidor simples que salva os inputs do usuário em um banco de dados MongoDB e os exibe de fazendo requisições à API.
 
 
 ## Screenshots
