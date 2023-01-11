@@ -29,9 +29,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/api", routesApi);
 
 app.get("/", async (req, res) => {
-
 	res.render("index");
-
 });
 
 

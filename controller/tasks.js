@@ -8,7 +8,6 @@ const taskController = {
 	},
 
 	saveTask(req, res){
-
 		const { task } = req.body;
 		const doc = new Task({
 			task: task,
@@ -19,15 +18,12 @@ const taskController = {
 	},
 
 	async deleteTask(req, res){
-
 		const { taskID } = req.body;
 		await Task.findByIdAndDelete(taskID);
 		res.end();
-
 	},
 
 	async doneTask(req, res){
-    
 		const { taskID } = req.body;
 		let upTask = {};
 
@@ -45,7 +41,6 @@ const taskController = {
 			console.log(error);
 		}
 		res.end();
-
 	},
 };
 
