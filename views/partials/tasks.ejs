@@ -1,8 +1,0 @@
-
-<% tasks.forEach(taskItem => { %>
-    <li>
-        <button name="doneBT" class="checkBT" value="<%= taskItem.id  %>" id="checkBT" data-done=""></button>
-        <span><%= taskItem.task  %></span>
-        <button name="deleteBT" class="deleteBT" value="<%= taskItem.id  %>"></button>
-    </li>
-<% }) %>
