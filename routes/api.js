@@ -1,33 +1,17 @@
-const express = require('express')
-const router = express.Router()
-const bodyParser = require('body-parser')
-const tf = require('../model/tasks')
-const cors = require('cors')
+const express = require("express");
+const router = express.Router();
+const tf = require("../controller/tasks");
+const cors = require("cors");
 
-router.use(cors())
+router.use(cors());
 
-router.get('/all', (req, res) => {
-    res.json(JSON.stringify(tf.updateTasks()))
-})
+router.get("/all", tf.allTasks);
 
-router.post('/new', bodyParser.json(), (req, res) => {
-    const { task } = req.body
-    tf.saveTask(task)
-    res.end()
-})
+router.post("/new", express.json(), tf.saveTask);
 
-router.post('/delete', bodyParser.json(), (req, res) => {
-    const { taskID } = req.body
-    tf.deleteTask(taskID)
+router.post("/delete", express.json(), tf.deleteTask);
 
-    res.end()
-})
-
-router.post('/done', bodyParser.json(), (req, res) => {
-    const { taskID } = req.body
-    tf.doneTask(taskID)
-    res.end()
-})
+router.post("/done", express.json(), tf.doneTask);
 
 
-module.exports = router
+module.exports = router;

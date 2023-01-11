@@ -1,24 +1,40 @@
 // REQUIRE DE MODULOS NODE
-require('dotenv').config()
-const express = require('express')
-const app = express()
-const path = require('path')
-const routesApi = require('./routes/api')
-const tf = require('./model/tasks')
+require("dotenv").config();
+const express = require("express");
+const path = require("path");
+const mongoose = require("mongoose");
 
-app.set('view engine', 'ejs')
-
-app.use('/api', routesApi)
-app.use(express.urlencoded({ extended: true }))
-app.use(express.static(path.join(__dirname, 'public')))
+const routesApi = require("./routes/api");
 
 
-app.get('/', (req, res) => {
-    res.render('index', {
-        tasks: tf.updateTasks()
-    })
-})
+// CONNECTION TO MONGO DB
+mongoose.set("strictQuery", true);
+mongoose.connect(process.env.MONGO_URL, err => {
+	if(err){
+		console.log("Failed to connect to Mongo DB:", err);
+	} else {
+		console.log("Success to connect to Mongo DB");
+	}
+});
 
 
-const PORT = process.env.PORT || 8080
-app.listen(PORT, () => console.log(`Server is listening on port ${PORT}`))
+// APP SETTINGS
+const app = express();
+
+app.set("view engine", "ejs");
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
+
+app.use("/api", routesApi);
+
+app.get("/", async (req, res) => {
+
+	res.render("index");
+
+});
+
+
+// SERVER LISTENING
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
