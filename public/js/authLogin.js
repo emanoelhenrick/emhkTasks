@@ -37,6 +37,7 @@ const Auth = {
                 .then(res => {
                     if(res.status === 400){
                         Auth.$errorAlert.classList.add('fail');
+                        return Promise.reject()
                     } else if(res.status === 302) {
                         if(Auth.$errorAlert.classList.contains('fail')){
                             Auth.$errorAlert.classList.remove('fail');
@@ -50,14 +51,14 @@ const Auth = {
                     
                 })
                 .then(data => {
+
+                    localStorage.setItem('tk_auth', data.tk_auth)
+
                     if (data.redirect) {
                     window.location.assign(data.redirect);
                     }
                 });
-
-
         },
-
     }
 }
 

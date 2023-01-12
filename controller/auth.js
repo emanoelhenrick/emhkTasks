@@ -1,5 +1,6 @@
 const User = require('../model/User')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 
 const register = async (req, res) => {
@@ -35,7 +36,9 @@ const login = async (req, res) => {
 
     if(!pwdVerify){return res.status(400).send({ error: 'password incorrect'})}
 
-    res.status(302).send({ redirect: '/app' });
+    const userToken = jwt.sign({_id: user._id}, process.env.TK_SEC)
+
+    res.status(302).send({ redirect: '/app', tk_auth: userToken});
 
 }
 

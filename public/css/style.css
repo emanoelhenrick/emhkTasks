@@ -55,6 +55,7 @@ main header h1 {
     color: white;
     font-weight: 400;  
     margin-bottom: -5px; 
+    text-align: center;
 }
 
 main header h1 span {
@@ -263,4 +264,28 @@ main header h1 span {
 
 .error.fail {
     display: block;
+}
+
+.userBox {
+    width: 630px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 50px;
+    color: var(--white);
+}
+
+.usernameBox {
+    background: var(--primary-gradient);
+    padding: 5px 15px;
+    border-radius: 10px;
+}
+
+.logout-btn {
+    cursor: pointer;
+    color: var(--dark-grey);
+    transition: all 200ms;
+}
+
+.logout-btn:hover {
+    color: var(--primary-color);
 }

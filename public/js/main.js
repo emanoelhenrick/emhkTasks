@@ -20,6 +20,8 @@ const Main = {
 			element.onclick = element => this.Events.checkButton_verific(element);
 		});
 
+		this.$logoutBTN.onclick = this.Events.logout
+
 
 	},
 
@@ -29,6 +31,8 @@ const Main = {
 		this.$sendButton = document.getElementById("sendButton");
 		this.$inputTask = document.getElementById("inputTask");
 		this.$deleteBTN = document.querySelectorAll(".deleteBT");
+		this.$logoutBTN = document.querySelector(".logout-btn");
+
 	},
 
 	overflowHub: function(){
@@ -41,12 +45,19 @@ const Main = {
 
 	updateTasks: async function(){
 
-		await fetch("http://192.168.0.103:3000/api/all")
+		const options = {
+			method: "GET",
+			headers: new Headers({"tk_auth": tk_auth}),
+		};
+
+		await fetch("http://192.168.0.103:3000/api/all", options)
 			.then(res => res.json())
 			.then(json => {
 
+				document.querySelector(".usernameBox").innerHTML = json.username
+
 				let taskElements = "";
-				let tasks = json;
+				let tasks = json.taskList;
         
 				tasks.forEach((task) => {
 
@@ -104,7 +115,7 @@ const Main = {
 
 		sendButton_newTask: async () => {
 
-			const task = {task: Main.$inputTask.value};
+			const task = {task: Main.$inputTask.value, tk: tk_auth};
 			const options = {
 				method: "POST",
 				headers: new Headers({"content-type": "application/json"}),
@@ -126,7 +137,20 @@ const Main = {
 			await fetch("http://192.168.0.103:3000/api/delete", options);
 			Main.init();
 		},
+
+		logout: function(){
+			localStorage.removeItem('tk_auth')
+			window.location.assign('/login')
+		}
 	}
 };
 
-Main.init();
+const tk_auth = localStorage.getItem('tk_auth')
+
+if(!tk_auth){
+	window.location.assign('/login')
+} else {
+	Main.init();
+}
+
+
