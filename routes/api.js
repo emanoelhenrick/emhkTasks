@@ -1,9 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const tf = require("../controller/tasks");
-const cors = require("cors");
 
-router.use(cors());
 
 router.get("/all", tf.allTasks);
 

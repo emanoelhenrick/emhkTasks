@@ -192,3 +192,62 @@ main header h1 span {
     -webkit-text-fill-color: transparent;
     font-weight: bold;
 }
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container h3 {
+    text-align: center;
+    margin-bottom: 30px;
+
+}
+
+.card {
+    background-color: var(--white);
+    width: 400px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 30px;
+}
+
+.input {
+    width: 100%;
+    padding: 15px 30px;
+    margin-bottom: 15px;
+    border-radius: 20px;
+    font-family: 'Poppins', sans-serif;
+    background-color: #dadada;
+    border: none;
+    outline: none;
+    font-size: 0.9em;
+}
+
+.link-auth {
+    text-decoration: none;
+    text-align: center;
+    margin-top: 20px;
+    display: inline;
+    color: #8893aa;
+    transition: color 200ms;
+    width: 30%;
+    align-self: center;
+}
+
+.link-auth:hover {
+    color: #0a0b0f;
+}
+
+.btn {
+    margin: auto;
+    width: 100%;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}

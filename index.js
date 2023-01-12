@@ -3,8 +3,11 @@ require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
+const cors = require("cors");
+
 
 const routesApi = require("./routes/api");
+const routesAuth = require('./routes/auth')
 
 
 // CONNECTION TO MONGO DB
@@ -23,14 +26,13 @@ const app = express();
 
 app.set("view engine", "ejs");
 
-app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api", routesApi);
 
-app.get("/", async (req, res) => {
-	res.render("index");
-});
+app.use("/", routesAuth);
 
 
 // SERVER LISTENING
