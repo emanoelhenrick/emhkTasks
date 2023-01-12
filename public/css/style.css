@@ -198,6 +198,7 @@ main header h1 span {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    flex-direction: column;
 }
 
 .container h3 {
@@ -250,4 +251,16 @@ main header h1 span {
 .form {
     display: flex;
     flex-direction: column;
+}
+
+.error {
+    color: red;
+    font-size: 0.9em;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    display: none;
+}
+
+.error.fail {
+    display: block;
 }

@@ -8,6 +8,7 @@ const Auth = {
         this.$usernameInput = document.querySelector('#username')
         this.$passwordInput = document.querySelector('#password')
         this.$btnLogin = document.querySelector('#btn-login')
+        this.$errorAlert = document.querySelector('.error')
     },
 
     bindEvents: function(){
@@ -34,16 +35,26 @@ const Auth = {
 
 			fetch("http://192.168.0.103:3000/loginAuth", options)
                 .then(res => {
-                    if (res.status === 302) {
-                    return res.json();
+                    if(res.status === 400){
+                        Auth.$errorAlert.classList.add('fail');
+                    } else if(res.status === 302) {
+                        if(Auth.$errorAlert.classList.contains('fail')){
+                            Auth.$errorAlert.classList.remove('fail');
+                        }
+                        Auth.$usernameInput.value = ''
+                        Auth.$passwordInput.value = ''
+                        return res.json();
+                    } else {
+                        throw new Error('Unexpected response');
                     }
-                    throw new Error('Unexpected response');
+                    
                 })
                 .then(data => {
                     if (data.redirect) {
                     window.location.assign(data.redirect);
                     }
                 });
+
 
         },
 

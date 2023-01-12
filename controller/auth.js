@@ -3,11 +3,14 @@ const bcrypt = require('bcryptjs')
 
 
 const register = async (req, res) => {
+
     const { username, email, password } = req.body
 
-    const emailVerify = await User.findOne({email: email})
-    if(emailVerify){return res.status(400).send('email already exists')}
+    const userVerify = await User.findOne({username: username})
+    if(userVerify){return res.status(400).send({ error: 'username já existe' })}
 
+    const emailVerify = await User.findOne({email: email})
+    if(emailVerify){return res.status(400).send({ error: 'email já existe' })}
 
     const newUser = new User({
         username: username,
@@ -18,7 +21,6 @@ const register = async (req, res) => {
     newUser.save()
         .catch('houve um erro no registro')
     
-    
     res.status(302).send({ redirect: '/login' });
 }
 
@@ -27,11 +29,11 @@ const login = async (req, res) => {
     const { username, password } = req.body
 
     const user = await User.findOne({username: username})
-    if(!user){return res.status(400).send('username doesnt exists')} 
+    if(!user){return res.status(400).send({ error: 'username doesnt exists'})} 
 
     const pwdVerify = bcrypt.compareSync(password, user.password)
 
-    if(!pwdVerify){return console.log('senha errada')}
+    if(!pwdVerify){return res.status(400).send({ error: 'password incorrect'})}
 
     res.status(302).send({ redirect: '/app' });
 

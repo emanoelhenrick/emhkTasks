@@ -9,6 +9,7 @@ const Auth = {
         this.$emailInput = document.querySelector('#email')
         this.$passwordInput = document.querySelector('#password')
         this.$btnRegister = document.querySelector('#btn-register')
+        this.$errorAlert = document.querySelector('.error')
     },
 
     bindEvents: function(){
@@ -17,7 +18,6 @@ const Auth = {
         
 
     },
-
 
     Events: {
 
@@ -35,12 +35,31 @@ const Auth = {
 				body: JSON.stringify(userData)
 			};
 
+
+            if(!userData.username || !userData.email || !userData.password){
+                Auth.$errorAlert.classList.add('fail');
+                return Auth.$errorAlert.innerHTML = '*Digite valores validos'
+            } 
+
 			fetch("http://192.168.0.103:3000/newRegister", options)
-                .then(res => {
-                    if (res.status === 302) {
-                    return res.json();
+                .then(async res => {
+                    if(res.status === 400){
+                        const json = await res.json();
+                        Auth.$errorAlert.classList.add('fail');
+                        Auth.$errorAlert.innerHTML = '*' + json.error
+                        return Promise.reject();
+
+                    } else if(res.status === 302) {
+                        if(Auth.$errorAlert.classList.contains('fail')){
+                            Auth.$errorAlert.classList.remove('fail');
+                        }
+                        Auth.$usernameInput.value = ''
+                        Auth.$emailInput.value = ''
+                        Auth.$passwordInput.value = ''
+                        return await res.json();
+                    } else {
+                        throw new Error('Unexpected response');
                     }
-                    throw new Error('Unexpected response');
                 })
                 .then(data => {
                     if (data.redirect) {
@@ -48,7 +67,6 @@ const Auth = {
                     }
                 })
         }
-
     }
 }
 
