@@ -7,7 +7,7 @@ const cors = require("cors");
 
 
 const routesApi = require("./routes/api");
-const routesAuth = require('./routes/auth')
+const routesAuth = require("./routes/auth");
 
 
 // CONNECTION TO MONGO DB
@@ -26,7 +26,7 @@ const app = express();
 
 app.set("view engine", "ejs");
 
-app.use(express.urlencoded({extended: true }))
+app.use(express.urlencoded({extended: true }));
 
 app.use(cors());
 

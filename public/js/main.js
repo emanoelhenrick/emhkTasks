@@ -5,11 +5,9 @@ const Main = {
 		this.cacheSelectors();
 		this.bindEvents();
 		this.overflowHub();
-        
 	},
 
 	bindEvents: function(){
-
 		this.$sendButton.onclick = () => Main.Events.sendButton_newTask();
 
 		this.$deleteBTN.forEach(element => {
@@ -20,9 +18,7 @@ const Main = {
 			element.onclick = element => this.Events.checkButton_verific(element);
 		});
 
-		this.$logoutBTN.onclick = this.Events.logout
-
-
+		this.$logoutBTN.onclick = this.Events.logout;
 	},
 
 	cacheSelectors: function(){
@@ -32,7 +28,6 @@ const Main = {
 		this.$inputTask = document.getElementById("inputTask");
 		this.$deleteBTN = document.querySelectorAll(".deleteBT");
 		this.$logoutBTN = document.querySelector(".logout-btn");
-
 	},
 
 	overflowHub: function(){
@@ -54,7 +49,7 @@ const Main = {
 			.then(res => res.json())
 			.then(json => {
 
-				document.querySelector(".usernameBox").innerHTML = json.username
+				document.querySelector(".usernameBox").innerHTML = json.username;
 
 				let taskElements = "";
 				let tasks = json.taskList;
@@ -62,7 +57,6 @@ const Main = {
 				tasks.forEach((task) => {
 
 					let doneClass = "";
-
 					if(task.done === true){
 						doneClass = "done";
 					} else {
@@ -70,7 +64,6 @@ const Main = {
 					}
 
 					const taskID = task._id;
-
 					let taskElement = `
                     <li>
                         <button onclick="Main.Events.check_done('${taskID}')" class="checkBT ${doneClass}" value="${taskID}" id="checkBT" data-done="${task.done}"></button>
@@ -139,16 +132,16 @@ const Main = {
 		},
 
 		logout: function(){
-			localStorage.removeItem('tk_auth')
-			window.location.assign('/login')
+			localStorage.removeItem("tk_auth");
+			window.location.assign("/login");
 		}
 	}
 };
 
-const tk_auth = localStorage.getItem('tk_auth')
+const tk_auth = localStorage.getItem("tk_auth");
 
 if(!tk_auth){
-	window.location.assign('/login')
+	window.location.assign("/login");
 } else {
 	Main.init();
 }
