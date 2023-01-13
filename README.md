@@ -1,7 +1,7 @@
 
 # emhk tasks
 
-Um To Do webapp made with Node.js and Mongo DB, with user account system to save and manage your tasks anywhere with internet access.
+A To Do webapp made with Node.js and Mongo DB, with user account system to save and manage your tasks anywhere with internet access.
 
 
 ## Screenshots
