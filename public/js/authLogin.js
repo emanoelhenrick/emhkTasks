@@ -62,4 +62,10 @@ const Auth = {
 	}
 };
 
-Auth.init();
+const tk_auth = localStorage.getItem("tk_auth");
+
+if(tk_auth){
+	window.location.assign("/app");
+} else {
+	Auth.init();
+}

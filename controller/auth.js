@@ -1,12 +1,27 @@
 const User = require("../model/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Joi = require("joi");
 
 
 const register = async (req, res) => {
 
 	const { username, email, password } = req.body;
 
+	const schema = Joi.object({
+		email: Joi.string()
+			.email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } }),
+        
+		password: Joi.string()
+			.min(8)
+	});
+
+	const valueEmail = schema.validate({email: email});
+	if(valueEmail.error){return res.status(400).send({ error: "E-mail inválido"});}
+
+	const valuePassword = schema.validate({password: password});
+	if(valuePassword.error){return res.status(400).send({ error: "A senha deve ter pelo menos 8 caracteres"});}
+	
 	const userVerify = await User.findOne({username: username});
 	if(userVerify){return res.status(400).send({ error: "username já existe" });}
 
