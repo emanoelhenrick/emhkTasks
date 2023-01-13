@@ -7,10 +7,22 @@
     <title>Auth</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+    <script>
+        const tk = localStorage.getItem("tk_auth")
+        if(tk){
+            window.location.assign("/app");
+        }
+    </script>
 </head>
 <body>
+    
     <section class="container">
+        <header>
+            <h1>emhk <span>tasks</span></h1>
+        </header>
         <section class="card">
+            <div class="loading"><span></span><span></span><span></span></div>
             <h3>Faça o Login para continuar</h3>
             <input name="username" id="username" class="input" type="text" placeholder="Username" required>
             <input name="password" id="password" class="input" type="password" placeholder="Senha" required>
@@ -18,6 +30,7 @@
             <button class="enviarBT btn" id="btn-login">Enviar</button>
             <a class="link-auth" href="/register">Registrar</a>
         </section>
+        <span id="made-by"> made by <span>manel códigos</span></span> 
     </section>
 
     <script src="/js/authLogin.js"></script>

@@ -1,3 +1,5 @@
+const URL_FETCH = "http://localhost:10000"; // "https://emhk-tasks.onrender.com";
+
 const Auth = {
 	init: function(){
 		this.cacheSelectors();
@@ -10,13 +12,16 @@ const Auth = {
 		this.$passwordInput = document.querySelector("#password");
 		this.$btnRegister = document.querySelector("#btn-register");
 		this.$errorAlert = document.querySelector(".error");
+		this.$loadingPanel = document.querySelector(".loading");
 	},
 
 	bindEvents: function(){
 
 		this.$btnRegister.onclick = this.Events.sendToBackRegister;
-        
 
+		this.$passwordInput.onkeypress = (event) => {
+			if(event.key === "Enter"){Auth.Events.sendToBackRegister();}
+		};
 	},
 
 	Events: {
@@ -41,9 +46,17 @@ const Auth = {
 				return Auth.$errorAlert.innerHTML = "*Digite valores validos";
 			} 
 
-			fetch("http://192.168.0.103:3000/newRegister", options)
+			Auth.$loadingPanel.classList.add("ok");
+
+			fetch(URL_FETCH + "/newRegister", options)
 				.then(async res => {
+				
 					if(res.status === 400){
+
+						if(Auth.$loadingPanel.classList.contains("ok")){
+							Auth.$loadingPanel.classList.remove("ok");
+						}
+
 						const json = await res.json();
 						Auth.$errorAlert.classList.add("fail");
 						Auth.$errorAlert.innerHTML = "*" + json.error;

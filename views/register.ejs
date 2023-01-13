@@ -7,10 +7,18 @@
     <title>Auth</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+    <script>
+        const tk = localStorage.getItem("tk_auth")
+        if(tk){
+            window.location.assign("/app");
+        }
+    </script>
 </head>
 <body>
     <section class="container">
         <section class="card">
+            <div class="loading"><span></span><span></span><span></span></div>
             <h3>Faça o registro</h3>
             <input name="username" id="username" class="input" type="text" placeholder="Username" required>
             <input name="email" id="email" class="input" type="email" placeholder="E-mail" required>

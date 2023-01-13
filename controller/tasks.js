@@ -16,7 +16,8 @@ const taskController = {
 
 		const taskRes = {
 			taskList: taskList,
-			username: user.username
+			username: user.username,
+			id: userID
 		};
 
 		res.json(taskRes);

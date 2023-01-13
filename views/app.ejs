@@ -8,29 +8,16 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 
+    <script>
+        const tk = localStorage.getItem("tk_auth")
+        if(!tk){
+            window.location.assign("/login");
+        }
+    </script>
 </head>
 <body>
-    <main>
-        <header>
-            <h1>emhk <span>tasks</span></h1>
-            <div class="userBox">
-                <span class="usernameBox">Usuario</span>
-                <span class="logout-btn">Logout</span>
-            </div>
-        </header>
-        <section class="hub-tasks">
-            <ul class="list" id="list">               
-                
-            </ul>           
-        </section>       
 
-            <section class="inputTaskSection">
-                <input name="task" type="text" placeholder="Digite uma tarefa" id="inputTask">
-                <button id="sendButton" class="enviarBT">Enviar</button>
-            </section>
-
-        <span id="made-by"> made by <span>manel códigos</span></span>
-    </main>
+        <%- include('./partials/appList') %> 
 
     <script src="/js/main.js"></script>
 </body>

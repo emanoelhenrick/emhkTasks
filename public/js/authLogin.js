@@ -1,3 +1,5 @@
+const URL_FETCH = "http://localhost:10000"; //"https://emhk-tasks.onrender.com";
+
 const Auth = {
 	init: function(){
 		this.cacheSelectors();
@@ -9,11 +11,16 @@ const Auth = {
 		this.$passwordInput = document.querySelector("#password");
 		this.$btnLogin = document.querySelector("#btn-login");
 		this.$errorAlert = document.querySelector(".error");
+		this.$loadingPanel = document.querySelector(".loading");
 	},
 
 	bindEvents: function(){
 
 		this.$btnLogin.onclick = this.Events.sendToBackLogin;
+
+		this.$passwordInput.onkeypress = (event) => {
+			if(event.key === "Enter"){Auth.Events.sendToBackLogin();}
+		};
 
 	},
 
@@ -33,9 +40,16 @@ const Auth = {
 				body: JSON.stringify(userData)
 			};
 
-			fetch("http://192.168.0.103:3000/loginAuth", options)
+			Auth.$loadingPanel.classList.add("ok");
+
+			fetch(URL_FETCH + "/loginAuth", options)
 				.then(res => {
 					if(res.status === 400){
+
+						if(Auth.$loadingPanel.classList.contains("ok")){
+							Auth.$loadingPanel.classList.remove("ok");
+						}
+
 						Auth.$errorAlert.classList.add("fail");
 						return Promise.reject();
 					} else if(res.status === 302) {
@@ -51,9 +65,7 @@ const Auth = {
                     
 				})
 				.then(data => {
-
 					localStorage.setItem("tk_auth", data.tk_auth);
-
 					if (data.redirect) {
 						window.location.assign(data.redirect);
 					}
