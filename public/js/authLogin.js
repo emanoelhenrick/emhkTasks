@@ -1,4 +1,4 @@
-const URL_FETCH = "http://localhost:10000"; //"https://emhk-tasks.onrender.com";
+const URL_FETCH = "http://localhost:10000"; //"https://emhk-tasks-v2.onrender.com";
 
 const Auth = {
 	init: function(){

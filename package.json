@@ -1,7 +1,7 @@
 {
-  "name": "express-pratica-2",
+  "name": "emhk-tasks",
   "version": "2.0.0",
-  "description": "",
+  "description": "to do web app",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "manel",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

@@ -5,6 +5,37 @@ const jwt = require("jsonwebtoken");
 
 const taskController = {
 
+	async updateTasks(req, res){
+
+		const taskListUpdate = req.body.taskList;
+		const tk_user = req.body.tk;
+
+		const token = jwt.verify(tk_user, process.env.TK_SEC);
+		const userID = token._id;
+
+		const tasksListMongo = await Task.find({ userID: userID });
+
+		const tasksToSave = taskListUpdate.filter(tasksUP => {
+			const match = tasksListMongo.find(taskMongo => taskMongo.taskFrontId === tasksUP.taskFrontId);
+			return !match;
+		});
+
+		if(tasksToSave){
+			taskController.saveTask(tasksToSave, userID);
+		}
+
+		if(req.body.delTasks){
+			taskController.deleteTask(req.body.delTasks, userID);
+		}
+
+		if(tasksListMongo.length !== 0){
+			taskController.doneTask(taskListUpdate);
+		}
+
+		res.end();
+
+	},
+
 	async allTasks(req, res){
 
 		const tk_user = req.header("tk_auth");
@@ -23,45 +54,38 @@ const taskController = {
 		res.json(taskRes);
 	},
 
-	saveTask(req, res){
-		const { task, tk } = req.body;
+	async saveTask(tasksToSave, userID){
 
-		const token = jwt.verify(tk, process.env.TK_SEC);
-		const userID = token._id;
-
-		const doc = new Task({
-			task: task,
-			done: false,
-			userID: userID
-		});
-		doc.save().then().catch(err => console.log(err));
-		res.end();
-	},
-
-	async deleteTask(req, res){
-		const { taskID } = req.body;
-		await Task.findByIdAndDelete(taskID);
-		res.end();
-	},
-
-	async doneTask(req, res){
-		const { taskID } = req.body;
-		let upTask = {};
-
-		const task = await Task.findOne({_id: taskID});
-
-		if(!task.done){
-			upTask.done = true;
-		} else {
-			upTask.done = false;
+		for (let task of tasksToSave){
+			const doc = new Task({
+				task: task.task,
+				done: task.done,
+				userID: userID,
+				taskFrontId: task.taskFrontId
+			});
+	
+			await doc.save().then().catch(err => console.log(err));
 		}
 
-		try{
-			await Task.findByIdAndUpdate(taskID, upTask);
-		} catch(error) {
-			console.log(error);
+	},
+
+	async deleteTask(delTasks, userID){
+
+		const tasks = JSON.parse(delTasks);
+		for (const task of tasks){
+			await Task.findOneAndDelete({taskFrontId: task.taskID, userID: userID});
 		}
-		res.end();
+
+	},
+
+	async doneTask(taskList){
+
+		for (const task of taskList){
+			await Task.findOne({taskFrontId: task.taskFrontId})
+				.then(async taskFind => {
+					await Task.findByIdAndUpdate(taskFind._id, task);
+				});
+		}
 	},
 };
 

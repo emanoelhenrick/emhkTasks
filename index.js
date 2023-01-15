@@ -10,7 +10,6 @@ const routesApi = require("./routes/api");
 const routesAuth = require("./routes/auth");
 
 
-// CONNECTION TO MONGO DB
 mongoose.set("strictQuery", true);
 mongoose.connect(process.env.MONGO_URL, err => {
 	if(err){
@@ -21,7 +20,6 @@ mongoose.connect(process.env.MONGO_URL, err => {
 });
 
 
-// APP SETTINGS
 const app = express();
 
 app.set("view engine", "ejs");
@@ -37,6 +35,5 @@ app.use("/api", routesApi);
 app.use("/", routesAuth);
 
 
-// SERVER LISTENING
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));

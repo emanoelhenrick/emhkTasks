@@ -7,7 +7,6 @@
     <title>Auth</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-
     <script>
         const tk = localStorage.getItem("tk_auth")
         if(tk){
@@ -17,6 +16,9 @@
 </head>
 <body>
     <section class="container">
+        <header>
+            <h1>emhk <span>tasks</span></h1>
+        </header>
         <section class="card">
             <div class="loading"><span></span><span></span><span></span></div>
             <h3>Faça o registro</h3>
@@ -27,8 +29,8 @@
             <button class="enviarBT btn" id="btn-register">Enviar</button>
             <a class="link-auth" href="/login">Login</a>
         </section>
+        <span id="made-by"> made by <span>manel códigos</span></span> 
     </section>
-
     <script src="/js/authRegister.js"></script>
 </body>
 </html>

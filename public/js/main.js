@@ -1,12 +1,11 @@
-const URL_FETCH = "http://localhost:10000"; //"https://emhk-tasks.onrender.com";
+const URL_FETCH = "http://localhost:10000"; //"https://emhk-tasks-v2.onrender.com";
 
 
 const Main = {
 
 	init: async function(){
-		await this.updateTasks();
-		this.cacheSelectors();
-		this.bindEvents();
+		await this.downloadTasks();
+		this.renderTaskList();
 		this.overflowHub();
 	},
 
@@ -36,7 +35,7 @@ const Main = {
 		this.$inputTask = document.getElementById("inputTask");
 		this.$deleteBTN = document.querySelectorAll(".deleteBT");
 		this.$logoutBTN = document.querySelector(".logout-btn");
-		this.$loadingTask = document.querySelectorAll(".loadingTask");
+		this.$savingUpdate = document.querySelector(".saving-alert");
 	},
 
 	overflowHub: function(){
@@ -46,29 +45,68 @@ const Main = {
 		}   
 	},
 
-	updateTasks: async function(){
+	downloadTasks: async function(){
 
 		const options = {
 			method: "GET",
 			headers: new Headers({"tk_auth": tk_auth}),
 		};
 
-		await fetch(URL_FETCH + "/api/all", options)
-			.then(res => res.json())
-			.then(json => {
+		try{
+			await fetch(URL_FETCH + "/api/all", options)
+				.then(res => res.json())
+				.then(json => {
+	
+					document.querySelector(".usernameBox").innerHTML = json.username;
+					localStorage.setItem("task_storage", JSON.stringify(json.taskList));
+			
+				});
+		} catch(error) {
+			console.log(error);
+		}
+	},
 
-				document.querySelector(".usernameBox").innerHTML = json.username;
-				tasksOnFront = json.taskList;
-				Main.renderTaskList();
-        
-			});
+	updateTasks: async function(){
+
+		const delTasks = localStorage.getItem("del_tasks");
+		const taskList = JSON.parse(localStorage.getItem("task_storage"))
+			.filter((element)=> element.mod === true);
+
+		if(taskList.length === 0 && !delTasks){
+			return;
+		}
+		
+		const taskUpdate = {taskList: taskList, tk: tk_auth, delTasks: delTasks};
+
+		const options = {
+			method: "POST",
+			headers: new Headers({"content-type": "application/json"}),
+			body: JSON.stringify(taskUpdate)
+		};
+
+		this.$savingUpdate.classList.add("load");
+	
+		try {
+			await fetch(URL_FETCH + "/api/update", options);
+			localStorage.removeItem("del_tasks");
+			this.$savingUpdate.classList.remove("load");
+		} catch(error) {
+			console.log(error);
+		}
+
 	},
 
 	renderTaskList: () => {
 
 		let taskElements = "";
 
-		tasksOnFront.forEach((task) => {
+		if(!localStorage.getItem("task_storage")){
+			localStorage.setItem("task_storage", JSON.stringify([]));
+		}
+
+		const task_storage = JSON.parse(localStorage.getItem("task_storage"));
+
+		task_storage.forEach((task) => {
 
 			let doneClass = "";
 			if(task.done === true){
@@ -77,10 +115,9 @@ const Main = {
 				doneClass = "";
 			}
 
-			const taskID = task._id;
+			const taskID = task.taskFrontId;
 			let taskElement = `
 					<li>
-						<div id="loadTask" class="${task.load}"></div>
 						<button onclick="Main.Events.check_done('${taskID}')" class="checkBT ${doneClass}" value="${taskID}" id="checkBT" data-done="${task.done}"></button>
 							<span>${task.task}</span>
 						<button name="deleteBT" class="deleteBT" value="${taskID}"></button>
@@ -91,110 +128,95 @@ const Main = {
 		});
 
 		document.getElementById("list").innerHTML = taskElements;
+
+		Main.cacheSelectors();
+		Main.bindEvents();
+		Main.updateTasks();
 	},
 
 	Events: {
 		checkButton_verific: async function(element){
 
+			const task_storage = JSON.parse(localStorage.getItem("task_storage"));
+
 			const taskID = {taskID: element.target.value};
 			const doneValue = element.target.dataset.done;
-
-			if(doneValue === "false"){
-				element.target.dataset.done = "true";
-
-				for (let task of tasksOnFront){
-					if(task._id === taskID.taskID){
-						task.done = true;
-					}
-				}
-				
-			} else {
-				element.target.dataset.done = "false";
-				
-				for (let task of tasksOnFront){
-					if(task._id === taskID.taskID){
-						task.done = false;
-					}
-				}
-
-			}
 
 			if(!element.target.classList.contains("done")){
 				element.target.classList.add("done");
 			} else {
 				element.target.classList.remove("done");
 			}
-			
-			const options = {
-				method: "POST",
-				headers: new Headers({"content-type": "application/json"}),
-				body: JSON.stringify(taskID)
-			};
-			await fetch(URL_FETCH + "/api/done", options);
-           
+
+			if(doneValue === "false"){
+				element.target.dataset.done = "true";
+
+				for (let task of task_storage){
+					if(task.taskFrontId === taskID.taskID){
+						task.done = true;
+						task.mod = true;
+					}
+				}
+				
+			} else {
+				element.target.dataset.done = "false";
+				
+				for (let task of task_storage){
+					if(task.taskFrontId === taskID.taskID){
+						task.done = false;
+						task.mod = true;
+					}
+				}
+			}
+
+			localStorage.setItem("task_storage", JSON.stringify(task_storage));
+
+			Main.updateTasks();
+
 		},
 
 		sendButton_newTask: async () => {
 
-			const task = {task: Main.$inputTask.value, tk: tk_auth};
+			if(!Main.$inputTask.value){
+				return;
+			}
 
-			tasksOnFront.push({task: Main.$inputTask.value, done: false, tmp: true, _id: "", load: "loadingTask"});
+			const task_storage = JSON.parse(localStorage.getItem("task_storage"));
+			task_storage.push({task: Main.$inputTask.value, done: false, taskFrontId: generateID(), mod: true});
+			localStorage.setItem("task_storage", JSON.stringify(task_storage));
 
 			Main.renderTaskList();
 			
-			const options = {
-				method: "POST",
-				headers: new Headers({"content-type": "application/json"}),
-				body: JSON.stringify(task)
-			};
-
 			document.getElementById("inputTask").value = "";
-
-			setTimeout(async () => {
-				await fetch(URL_FETCH + "/api/new", options)
-					.then(() => {
-						const tasksUp = tasksOnFront.filter(task => {
-							if(!task.tmp){
-								return task;
-							}
-						});
-	
-						tasksOnFront = tasksUp;
-					});
-				Main.init();
-				
-			}, 1000);
-
 			
 		},
 
 		delete_ask: async function(element){
 
+			if(!localStorage.getItem("del_tasks")){
+				localStorage.setItem("del_tasks", JSON.stringify([]));
+			}
+
 			const taskID = {taskID: element.target.value};
 
-			const tasksUp = tasksOnFront.filter(task => {
-				if(task._id !== taskID.taskID){
+			let delTasks = JSON.parse(localStorage.getItem("del_tasks"));
+			delTasks.push(taskID);
+			localStorage.setItem("del_tasks", JSON.stringify(delTasks));
+
+			const task_storage = JSON.parse(localStorage.getItem("task_storage"));
+
+			const tasksUp = task_storage.filter(task => {
+				if(task.taskFrontId !== taskID.taskID){
 					return task;
 				}
 			});
-
-			tasksOnFront = tasksUp;
-
+			localStorage.setItem("task_storage", JSON.stringify(tasksUp));
 			Main.renderTaskList();
-
-			const options = {
-				method: "POST",
-				headers: new Headers({"content-type": "application/json"}),
-				body: JSON.stringify(taskID)
-			};
-			await fetch(URL_FETCH + "/api/delete", options);
-			
-			Main.cacheSelectors();
-			Main.bindEvents();
 		},
 
 		logout: function(){
 			localStorage.removeItem("tk_auth");
+			localStorage.removeItem("task_storage");
 			window.location.assign("/login");
 		}
 	}
@@ -202,10 +224,18 @@ const Main = {
 
 const tk_auth = localStorage.getItem("tk_auth");
 
-let tasksOnFront = [];
-
 if(!tk_auth){
 	window.location.assign("/login");
 } else {
 	Main.init();
+}
+
+function generateID() {
+	let array = new Uint32Array(4);
+	window.crypto.getRandomValues(array);
+	let str = "";
+	for (let i = 0; i < array.length; i++) {
+		str += array[i].toString(16);
+	}
+	return str;
 }
